@@ -19,7 +19,7 @@ echo "===== 5. 生成 Reality 密钥 ====="
 KEYS=$(xray x25519)
 
 REALITY_PRIVATE_KEY=$(echo "$KEYS" | grep "^PrivateKey:" | awk -F': ' '{print $2}')
-REALITY_PASSWORD=$(echo "$KEYS" | grep "^Password:"   | awk -F': ' '{print $2}')
+REALITY_PASSWORD=$(echo "$KEYS" | grep -E "^(Password|Public)" | awk -F':' '{print $2}' | tr -d ' ')
 REALITY_HASH32=$(echo "$KEYS" | grep "^Hash32:"     | awk -F': ' '{print $2}')
 
 echo "===== 6. 生成 Short ID ====="
@@ -40,5 +40,5 @@ echo "Reality Hash32:     $REALITY_HASH32"
 echo "Short ID:           $SHORT_ID"
 echo "======================================"
 echo
-echo "��� 直接复制以上内容，粘给 AI 或自己写 config.json"
+echo "��� 直接复制以上内容，粘给 AI 或自己写 config.json"
 
