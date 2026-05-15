@@ -36,9 +36,9 @@ UUID=$(xray uuid)
 echo "===== 5. 生成 Reality 密钥 ====="
 KEYS=$(xray x25519)
 
-REALITY_PRIVATE_KEY=$(echo "$KEYS" | awk -F': *' 'tolower($1) ~ /^private[ _-]?key$/ {print $2; exit}')
-REALITY_PUBLIC_KEY=$(echo "$KEYS" | awk -F': *' 'tolower($1) ~ /^(public[ _-]?key|password)$/ {print $2; exit}')
-REALITY_HASH32=$(echo "$KEYS" | awk -F': *' 'tolower($1) == "hash32" {print $2; exit}')
+REALITY_PRIVATE_KEY=$(echo "$KEYS" | awk -F': *' '/^PrivateKey:/ {print $2; exit}')
+REALITY_PUBLIC_KEY=$(echo "$KEYS" | awk -F': *' '/^(Password|PublicKey|Password \(PublicKey\)):/ {print $2; exit}')
+REALITY_HASH32=$(echo "$KEYS" | awk -F': *' '/^Hash32:/ {print $2; exit}')
 
 if [ -z "$REALITY_PRIVATE_KEY" ] || [ -z "$REALITY_PUBLIC_KEY" ]; then
     echo "❌ Reality 密钥解析失败，xray x25519 原始输出如下："
